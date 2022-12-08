@@ -4,7 +4,6 @@ import com.spring.training.domain.Person;
 import com.spring.training.service.PersonService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -26,7 +25,7 @@ public class PersonController {
         return service.getPersons(name);
     }
 
-    @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping
     public Flux<Person> getPersons() {
         return service.getPersons();
     }
