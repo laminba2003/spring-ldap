@@ -7,3 +7,7 @@ spring:
     base: dc=example,dc=com
     username: uid=admin,ou=system
     password: secret
+
+logging:
+  level:
+    org.springframework: TRACE

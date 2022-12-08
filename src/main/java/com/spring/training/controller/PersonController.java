@@ -16,7 +16,7 @@ public class PersonController {
 
     final PersonService service;
 
-    @GetMapping("{name/company/country}")
+    @GetMapping("{name}/{company}/{country}")
     public Mono<Person> getPerson(@PathVariable("name") String name, @PathVariable("company") String company, @PathVariable("country") String country) {
         return service.getPerson(name, company, country);
     }
