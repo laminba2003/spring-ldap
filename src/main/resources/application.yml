@@ -1,2 +1,9 @@
 server:
   port: 9091
+
+spring:
+  ldap:
+    url: ldap://localhost:10389
+    base: dc=example,dc=com
+    username: uid=admin,ou=system
+    password: secret
