@@ -16,7 +16,9 @@ public class PersonContextMapper extends AbstractContextMapper<Person> {
 
     public void mapToContext(Person person, DirContextOperations context) {
         context.setAttributeValues("objectclass", new String[]{"top", "person"});
-        context.setAttributeValue("cn", person.getName());
+        final String name = person.getName();
+        context.setAttributeValue("cn", name);
+        context.setAttributeValue("sn", name.substring(name.lastIndexOf(" ") + 1));
     }
 
 }

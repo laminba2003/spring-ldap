@@ -65,8 +65,8 @@ public class PersonRepository {
 
     protected Name buildDn(String name, String company, String country) {
         return LdapNameBuilder.newInstance()
-                .add("c", country)
                 .add("ou", company)
+                .add("c", country)
                 .add("cn", name)
                 .build();
     }
