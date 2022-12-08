@@ -32,8 +32,7 @@ public class PersonRepository {
     }
 
     public Person update(Person person) {
-        Name dn = buildDn(person);
-        DirContextOperations context = ldapTemplate.lookupContext(dn);
+        DirContextOperations context = ldapTemplate.lookupContext(buildDn(person));
         personContextMapper.mapToContext(person, context);
         ldapTemplate.modifyAttributes(context);
         return person;
