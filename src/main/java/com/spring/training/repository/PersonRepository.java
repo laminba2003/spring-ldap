@@ -44,8 +44,7 @@ public class PersonRepository {
     }
 
     public Person findByPrimaryKey(String name, String company, String country) {
-        Name dn = buildDn(name, company, country);
-        return ldapTemplate.lookup(dn, personContextMapper);
+        return ldapTemplate.lookup(buildDn(name, company, country), personContextMapper);
     }
 
     public List<Person> findByName(String name) {
