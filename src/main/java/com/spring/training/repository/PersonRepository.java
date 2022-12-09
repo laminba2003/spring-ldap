@@ -10,7 +10,6 @@ import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.filter.EqualsFilter;
 import org.springframework.ldap.query.LdapQuery;
 import org.springframework.ldap.support.LdapNameBuilder;
-import org.springframework.ldap.support.LdapUtils;
 import org.springframework.stereotype.Repository;
 
 import javax.naming.Name;
@@ -27,40 +26,47 @@ public class PersonRepository {
     final LdapConfig ldapConfig;
 
     public Person create(Person person) {
-        DirContextAdapter context = new DirContextAdapter(buildDn(person.getUid()));
+        DirContextAdapter context = new DirContextAdapter(buildPersonDn(person.getUid()));
         personContextMapper.mapToContext(person, context);
         ldapTemplate.bind(context);
         return person;
     }
 
     public Person update(Person person) {
-        DirContextOperations context = ldapTemplate.lookupContext(buildDn(person.getUid()));
+        DirContextOperations context = ldapTemplate.lookupContext(buildPersonDn(person.getUid()));
         personContextMapper.mapToContext(person, context);
         ldapTemplate.modifyAttributes(context);
         return person;
     }
 
     public void delete(String uid) {
-        ldapTemplate.unbind(buildDn(uid));
+        ldapTemplate.unbind(buildPersonDn(uid));
     }
 
     public Person findById(String uid) {
-        return ldapTemplate.lookup(buildDn(uid), personContextMapper);
+        return ldapTemplate.lookup(buildPersonDn(uid), personContextMapper);
     }
 
     public List<Person> findAll() {
+        Name base = LdapNameBuilder.newInstance()
+                .add("ou", ldapConfig.getCompany())
+                .add("c", ldapConfig.getCountry()).build();
         EqualsFilter filter = new EqualsFilter("objectclass", "person");
-        return ldapTemplate.search(LdapUtils.emptyLdapName(), filter.encode(), personContextMapper);
+        return ldapTemplate.search(base, filter.encode(), personContextMapper);
     }
 
     public List<Person> findByName(String name) {
+        Name base = LdapNameBuilder.newInstance()
+                .add("ou", ldapConfig.getCompany())
+                .add("c", ldapConfig.getCountry()).build();
         LdapQuery query = query()
+                .base(base)
                 .where("objectclass").is("person")
                 .and("cn").whitespaceWildcardsLike(name);
         return ldapTemplate.search(query, personContextMapper);
     }
 
-    protected Name buildDn(String uid) {
+    protected Name buildPersonDn(String uid) {
         return LdapNameBuilder.newInstance()
                 .add("ou", ldapConfig.getCompany())
                 .add("c", ldapConfig.getCountry())
