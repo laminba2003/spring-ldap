@@ -12,12 +12,20 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Person implements Serializable {
+    @JsonProperty
+    @NotNull
+    String uid;
     @NotNull
     String name;
     @NotNull
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    String country;
+    String title;
     @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    String company;
+    String password;
+    String telephone;
+    String address;
+
+    public String getLastName() {
+        return name.substring(name.lastIndexOf(" ") + 1);
+    }
 }

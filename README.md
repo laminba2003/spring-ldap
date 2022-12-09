@@ -26,3 +26,25 @@ To navigate the DIT we can define a path (a DN) to the place where our data is (
     <artifactId>spring-ldap-core</artifactId>
 </dependency>
 ```
+
+## Start the apacheDS server
+
+Run this command to start all services in the correct order.
+
+```bash
+$ docker-compose up -d
+```
+
+## Run the application
+
+Run this command to start the application.
+
+```
+mvn spring-boot:run
+```
+
+## Stop the apacheDS server
+
+```bash
+docker-compose down
+```

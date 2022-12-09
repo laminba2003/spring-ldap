@@ -21,20 +21,22 @@ public class PersonService {
         return Flux.fromIterable(personRepository.findByName(name));
     }
 
-    public Mono<Person> getPerson(String name, String company, String country) {
-        return Mono.just(personRepository.findByPrimaryKey(name, company, country));
+    public Mono<Person> getPerson(String uid) {
+        return Mono.just(personRepository.findById(uid));
     }
 
     public Mono<Person> createPerson(Person person) {
         return Mono.just(personRepository.create(person));
     }
 
-    public Mono<Person> updatePerson(Person person) {
+    public Mono<Person> updatePerson(String uid, Person person) {
+        person.setUid(uid);
         return Mono.just(personRepository.update(person));
     }
 
-    public Mono<Void> deletePerson(Person person) {
-        return Mono.just(personRepository.delete(person)).then();
+    public Mono<Void> deletePerson(String uid) {
+        personRepository.delete(uid);
+        return Mono.empty();
     }
 
 }

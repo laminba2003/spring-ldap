@@ -1,5 +1,6 @@
 package com.spring.training.repository;
 
+import com.spring.training.config.LdapConfig;
 import com.spring.training.domain.Person;
 import com.spring.training.mapper.PersonContextMapper;
 import lombok.AllArgsConstructor;
@@ -23,28 +24,33 @@ public class PersonRepository {
 
     final LdapTemplate ldapTemplate;
     final PersonContextMapper personContextMapper;
+    final LdapConfig ldapConfig;
 
     public Person create(Person person) {
-        DirContextAdapter context = new DirContextAdapter(buildDn(person));
+        DirContextAdapter context = new DirContextAdapter(buildDn(person.getUid()));
         personContextMapper.mapToContext(person, context);
         ldapTemplate.bind(context);
         return person;
     }
 
     public Person update(Person person) {
-        DirContextOperations context = ldapTemplate.lookupContext(buildDn(person));
+        DirContextOperations context = ldapTemplate.lookupContext(buildDn(person.getUid()));
         personContextMapper.mapToContext(person, context);
         ldapTemplate.modifyAttributes(context);
         return person;
     }
 
-    public Person delete(Person person) {
-        ldapTemplate.unbind(buildDn(person));
-        return person;
+    public void delete(String uid) {
+        ldapTemplate.unbind(buildDn(uid));
     }
 
-    public Person findByPrimaryKey(String name, String company, String country) {
-        return ldapTemplate.lookup(buildDn(name, company, country), personContextMapper);
+    public Person findById(String uid) {
+        return ldapTemplate.lookup(buildDn(uid), personContextMapper);
+    }
+
+    public List<Person> findAll() {
+        EqualsFilter filter = new EqualsFilter("objectclass", "person");
+        return ldapTemplate.search(LdapUtils.emptyLdapName(), filter.encode(), personContextMapper);
     }
 
     public List<Person> findByName(String name) {
@@ -54,20 +60,11 @@ public class PersonRepository {
         return ldapTemplate.search(query, personContextMapper);
     }
 
-    public List<Person> findAll() {
-        EqualsFilter filter = new EqualsFilter("objectclass", "person");
-        return ldapTemplate.search(LdapUtils.emptyLdapName(), filter.encode(), personContextMapper);
-    }
-
-    protected Name buildDn(Person person) {
-        return buildDn(person.getName(), person.getCompany(), person.getCountry());
-    }
-
-    protected Name buildDn(String name, String company, String country) {
+    protected Name buildDn(String uid) {
         return LdapNameBuilder.newInstance()
-                .add("ou", company)
-                .add("c", country)
-                .add("cn", name)
+                .add("ou", ldapConfig.getCompany())
+                .add("c", ldapConfig.getCountry())
+                .add("uid", uid)
                 .build();
     }
 
