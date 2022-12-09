@@ -59,6 +59,17 @@ Run this command to start the application.
 mvn spring-boot:run
 ```
 
+### REST endpoints
+
+| HTTP verb | Resource  | Description
+|----|---|---|
+|  GET  | /persons  | retrieve list and information of persons  
+|  GET |  /persons/{uid} | retrieve information of a person specified by {uid}
+|  POST | /persons  | create a new person with payload  
+|  PUT   |  /persons/{uid} | update a person with payload   
+|  DELETE   | /persons/{uid}  |  delete a person specified by {uid} 
+
+
 ## Stop the apacheDS server
 
 ```bash
