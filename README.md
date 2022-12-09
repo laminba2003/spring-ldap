@@ -20,11 +20,27 @@ To navigate the DIT we can define a path (a DN) to the place where our data is (
 
 ## Setup
 
+### pom.xml
+
 ```xml
 <dependency>
     <groupId>org.springframework.ldap</groupId>
     <artifactId>spring-ldap-core</artifactId>
 </dependency>
+```
+
+### application.yml
+
+```yaml
+server:
+  port: 9091
+
+spring:
+  ldap:
+    urls: "ldap://localhost:10389"
+    base: dc=example,dc=com
+    username: uid=admin,ou=system
+    password: secret
 ```
 
 ## Start the apacheDS server
