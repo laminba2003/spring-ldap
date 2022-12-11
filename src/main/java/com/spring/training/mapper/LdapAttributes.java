@@ -16,8 +16,7 @@ public interface LdapAttributes {
 
     static Name buildPersonDn(LdapConfig ldapConfig, String uid) {
         return LdapNameBuilder.newInstance()
-                .add("ou", ldapConfig.getCompany())
-                .add("c", ldapConfig.getCountry())
+                .add(getBase(ldapConfig))
                 .add("uid", uid)
                 .build();
     }
