@@ -2,7 +2,7 @@ package com.spring.training.repository;
 
 import com.spring.training.config.LdapConfig;
 import com.spring.training.domain.Person;
-import com.spring.training.mapper.PersonContextMapper;
+import com.spring.training.mapping.PersonContextMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.ldap.core.DirContextAdapter;
 import org.springframework.ldap.core.DirContextOperations;
@@ -13,8 +13,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.spring.training.mapper.LdapAttributes.buildPersonDn;
-import static com.spring.training.mapper.LdapAttributes.getBase;
+import static com.spring.training.mapping.LdapAttributes.buildPersonDn;
+import static com.spring.training.mapping.LdapAttributes.getBase;
 import static org.springframework.ldap.query.LdapQueryBuilder.query;
 
 @Repository

@@ -1,11 +1,11 @@
-package com.spring.training.mapper;
+package com.spring.training.mapping;
 
 import com.spring.training.domain.Person;
 import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.ldap.core.support.AbstractContextMapper;
 import org.springframework.stereotype.Component;
 
-import static com.spring.training.mapper.LdapAttributes.*;
+import static com.spring.training.mapping.LdapAttributes.*;
 
 @Component
 public class PersonContextMapper extends AbstractContextMapper<Person> {

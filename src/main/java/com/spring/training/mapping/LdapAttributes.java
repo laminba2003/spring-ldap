@@ -1,4 +1,4 @@
-package com.spring.training.mapper;
+package com.spring.training.mapping;
 
 import com.spring.training.config.LdapConfig;
 import org.springframework.ldap.support.LdapNameBuilder;
